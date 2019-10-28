@@ -8,7 +8,7 @@ Techniques and source code for animating lines with a custom [Canvas](https://ww
 
 There are three types of route lines that can generated. This can be configured in the `STATE` variable. The options are:
 - `circle`: lines start at center and head towards the circumference of the circle with each point being an equal distance from each other
-- `random`: lines are generated with random start and end points
+- `random`: lines are generated with random start and end points.
 - `randomSameStarting`: lines start at the same center but have random end points.
 
 The routes are based off the real road network geometry and come from the [HERE Routing API](https://developer.here.com/documentation/routing/topics/what-is.html).
