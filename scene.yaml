@@ -1,0 +1,129 @@
+cameras:
+    camera1:
+        type: perspective
+        position: [1,1,2.4]
+sources:
+    omv:
+        type: OMV
+        max_zoom: 17
+        min_display_zoom: 1
+        tiled: true
+global:
+    language: en
+    language_text_source: "function() { return (global.language && feature['name:'+global.language]) || feature.name;\n}\n"
+    water: '#151A20'
+    land: '#23292E'
+    text: '#677C8D'
+    minor_text: '#5D666F'
+    road: '#38424C'
+    land: '#21262B'
+    building: '#242933'
+styles:
+    polygons_transparent:
+        base: polygons
+        blend: opaque
+        blend_order: 1
+fonts:
+    FiraGO:
+        - weight: 400
+          url: https://assets.vector.hereapi.com/fonts/FiraGO-Regular.ttf
+        - weight: 400
+        - style: italics
+          url: https://assets.vector.hereapi.com/fonts/FiraGO-Italic.ttf
+        - weight: 500
+          url: https://assets.vector.hereapi.com/fonts/FiraGO-Medium.ttf
+scene:
+    background:
+        color: global.land
+    sky:
+        zenith: '#010205'
+        horizon: '#010205'
+        fog: '#21262B'
+layers:
+    landuse:
+        data: 
+            source: omv
+        park:
+            filter:
+                kind: park
+            draw:
+                polygons:
+                    order: function() { return feature.sort_rank; }
+                    color: global.land
+        university:
+            filter:
+                kind: university
+            draw:
+                polygons:
+                    order: function() { return feature.sort_rank; }
+                    color: global.land
+        aerodrome:
+            filter:
+                kind: aerodrome
+            draw:
+                polygons:
+                    order: function() { return feature.sort_rank; }
+                    color: global.land
+        hospital:
+            filter:
+                kind: hospital
+            draw:
+                polygons:
+                    order: function() { return feature.sort_rank; }
+                    color: global.land
+    water:
+        data: { source: omv }
+        draw:
+            polygons:
+                order: function() { return feature.sort_rank; }
+                color: global.water
+
+    roads:
+        data:
+            source: omv
+        filter:
+            not: { kind: [path, rail, ferry] }
+        draw:
+            lines:
+                order: function() { return feature.sort_rank; }
+                color: global.road
+                width: [[12, 18], [18, 11]]
+                cap: round
+        highway:
+            filter:
+                kind: highway
+            draw:
+                lines:
+                    order: function() { return feature.sort_rank; }
+                    color: global.road
+                    width: [[3, 8000], [8, 1200], [10, 300], [12, 50],[14,40], [18, 30]]
+                    outline:
+                        color: [0.290, 0.329, 0.369, 1.00]
+                        width: [[8, 20], [18, 5]]
+        major_road:
+            filter:
+                kind: major_road
+            draw:
+                lines:
+                    order: function() { return feature.sort_rank; }
+                    color: global.road
+                    width: [[8, 200], [12, 60], [18, 10]]
+        minor_road:
+            filter:
+                kind: minor_road
+            draw:
+                lines:
+                    order: function() { return feature.sort_rank; }
+                    color: global.road
+                    width: [[14, 12], [18, 10]]
+    buildings:
+        data: { source: omv }
+        draw:
+            polygons:
+                order: function() { return feature.sort_rank; }
+                color: [0.141, 0.160, 0.2, 1.0]
+        3d-buildings:
+            filter: { $zoom: { min: 11 } }
+            draw:
+                polygons:
+                    extrude: function () { return feature.height > 20 || $zoom >= 16; }
