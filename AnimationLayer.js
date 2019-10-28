@@ -29,48 +29,35 @@ class AnimationLayer extends H.map.layer.CanvasLayer {
          const vectors2 = [];
          const vectors3 = [];
          for (let i = 0, len = route.length; i < len; i++) {
-            const { x, y, z } = map.getEngine()
-               .geoToMeters({lat: route[i][0], lng: route[i][1]});
+            const { x, y, z} = map.getEngine().geoToMeters({lat: route[i][0], lng: route[i][1]});
 
-            const two = map.getEngine()
-               .geoToMeters({lat: route[i][0] + 0.005, lng: route[i][1] + 0.005});
-            const twoX = two.x;
-            const twoY = two.y;
-            const twoZ = two.z;
-
-
-            const three = map.getEngine()
-               .geoToMeters({lat: route[i][0] + 0.01, lng: route[i][1] + 0.01});
-            const threeX = three.x;
-            const threeY = three.y;
-            const threeZ = three.z;
-      
-            vectors.push(new THREE.Vector3(x - this.origin.x, y - this.origin.y, z - this.origin.z));
-            vectors2.push(new THREE.Vector3(twoX - this.origin.x, twoY - this.origin.y, twoZ - this.origin.z) );
-
-            vectors3.push(new THREE.Vector3(threeX - this.origin.x, threeY - this.origin.y, threeZ - this.origin.z));
+            //Stupid hack to make lines look thicker, just create multiple lines next to each other
+            const two = map.getEngine().geoToMeters({lat: route[i][0] + 0.005, lng: route[i][1] + 0.005});
+            const three = map.getEngine().geoToMeters({lat: route[i][0] + 0.01, lng: route[i][1] + 0.01});
+            vectors.push(new THREE.Vector3(x - this.origin.x, y - this.origin.y, 0));
+            vectors2.push(new THREE.Vector3(two.x - this.origin.x, two.y - this.origin.y, 0));
+            vectors3.push(new THREE.Vector3(three.x - this.origin.x, three.y - this.origin.y, 0));
          }
 
          const color = new THREE.Color(`hsl(${Math.floor(getRandom(180, 220))}, 100%, 50%)`);
          const material = new THREE.LineBasicMaterial({ color });
 
+         //Continuing with thick line hack, do everything 3 times
          const geometry = new THREE.BufferGeometry().setFromPoints(vectors);
-         geometry.setDrawRange(0, 0);
-
          const geometry2 = new THREE.BufferGeometry().setFromPoints(vectors2);
-         geometry2.setDrawRange(0, 0);
-
          const geometry3 = new THREE.BufferGeometry().setFromPoints(vectors3);
+
+         geometry.setDrawRange(0, 0);
+         geometry2.setDrawRange(0, 0);
          geometry3.setDrawRange(0, 0);
 
-         const curveObject = new THREE.Line( geometry, material );
-         this.scene.add(curveObject);
+         const lineObject = new THREE.Line(geometry, material);
+         const lineObject2 = new THREE.Line(geometry2, material);
+         const lineObject3 = new THREE.Line(geometry3, material);
 
-         const curveObject2 = new THREE.Line( geometry2, material );
-         this.scene.add(curveObject2);
-
-         const curveObject3 = new THREE.Line( geometry3, material );
-         this.scene.add(curveObject3);
+         this.scene.add(lineObject);
+         this.scene.add(lineObject2);
+         this.scene.add(lineObject3);
 
          this.projected.push(geometry);
          this.projected.push(geometry2);
@@ -80,7 +67,7 @@ class AnimationLayer extends H.map.layer.CanvasLayer {
       this.drawRange = 0;
    }
 
-   renderScene(gl, {size: {w, h}, cameraMatrix, pixelRatio}) {
+   renderScene(gl, { size: { w, h }, cameraMatrix, pixelRatio }) {
       let renderer = this.renderer;
       let drawRange = this.drawRange;
       if (!renderer) {
@@ -103,7 +90,6 @@ class AnimationLayer extends H.map.layer.CanvasLayer {
       } else if (this.drawRange < 0) {
          this.direction = 'up'
       }
-
       if (this.direction === 'up') {
          this.drawRange +=10;
       } else {
