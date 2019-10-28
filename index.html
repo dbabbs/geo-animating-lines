@@ -13,11 +13,21 @@
          height: 100vh;
          width: 100vw;
       }
+
+      .loading {
+         position: absolute;
+         top: 0;
+         margin: 15;
+         color: rgba(255, 255, 255, 0.7);
+         font-family: sans-serif;
+         z-index: 5000;
+      }
    </style>
 
 </head>
 
 <body>
+   <div class="loading">Loading...</div>
    <div class="map"></div>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>

@@ -3,7 +3,7 @@ import AnimationLayer from './AnimationLayer.js';
 
 const STATE = {
    flying: false,
-   type: 'circle' // options: ['random', 'sameStarting', 'circle']
+   type: 'circle' // options: ['random', 'randomSameStarting', 'circle']
 }
 
 const CONFIG = {
@@ -44,7 +44,7 @@ function generateStartAndEndPoints() {
    const lines = [];
 
    switch (STATE.type) {
-      case 'sameStarting':
+      case 'randomSameStarting':
          for (let i = 0; i < CONFIG.numLines; i++) {
             lines.push({
                start: { lat: center.lat, lng: center.lng }, 
@@ -81,6 +81,8 @@ async function calculateAndPlot() {
    const routes = (await Promise.allSettled(promises))
       .filter(x => x.status === 'fulfilled')
       .map(x => x.value);
+
+   document.querySelector('.loading').style.display = 'none';
    rotateCamera();
    const max = Math.max(...routes.map(x => x.length));
    const canvasLayer = new AnimationLayer(map, routes, max);
