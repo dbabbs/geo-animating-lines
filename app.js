@@ -100,7 +100,7 @@ async function rotateCamera() {
    setInterval(() => {
       flyTo({
          heading: map.getViewModel().getLookAtData().heading += 30,
-         zoom: map.getZoom() - 0.2,
+         zoom: map.getZoom() - 0.3,
          duration
       });
    }, duration)
