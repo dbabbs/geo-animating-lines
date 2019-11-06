@@ -32,8 +32,8 @@ class AnimationLayer extends H.map.layer.CanvasLayer {
             const { x, y, z} = map.getEngine().geoToMeters({lat: route[i][0], lng: route[i][1]});
 
             //Stupid hack to make lines look thicker, just create multiple lines next to each other
-            const two = map.getEngine().geoToMeters({lat: route[i][0] + 0.005, lng: route[i][1] + 0.005});
-            const three = map.getEngine().geoToMeters({lat: route[i][0] + 0.01, lng: route[i][1] + 0.01});
+            const two = map.getEngine().geoToMeters({lat: route[i][0] + 0.0002, lng: route[i][1] + 0.0002});
+            const three = map.getEngine().geoToMeters({lat: route[i][0] + 0.0004, lng: route[i][1] + 0.0004});
             vectors.push(new THREE.Vector3(x - this.origin.x, y - this.origin.y, 0));
             vectors2.push(new THREE.Vector3(two.x - this.origin.x, two.y - this.origin.y, 0));
             vectors3.push(new THREE.Vector3(three.x - this.origin.x, three.y - this.origin.y, 0));
@@ -91,9 +91,9 @@ class AnimationLayer extends H.map.layer.CanvasLayer {
          this.direction = 'up'
       }
       if (this.direction === 'up') {
-         this.drawRange +=10;
+         this.drawRange +=1;
       } else {
-         this.drawRange -=10;
+         this.drawRange -=1;
       }
    
       this.camera.projectionMatrix = new THREE.Matrix4().fromArray(cameraMatrix);

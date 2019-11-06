@@ -10,8 +10,8 @@ const CONFIG = {
    //Get your own API Key at developer.here.com
    apikey: 'EybNF4MkvcUj8WX1VJRKhT9dwDVz1wIHaKGF5tpqNss',
    numLines: 250,
-   zoom: 6.5,
-   position: {lat: 51.509865, lng: -0.118092},
+   zoom: 12,
+   position: {lat: 40.721192,lng:  -73.997729},
    tilt: 45,
    bounds: {
       east: 17.765011384549428,
@@ -54,7 +54,7 @@ function generateStartAndEndPoints() {
          break;
       case 'circle':
          const options = { steps: CONFIG.numLines, units: 'kilometers' };
-         const circle = turf.circle([center.lng, center.lat], 300, options)
+         const circle = turf.circle([center.lng, center.lat], 10, options)
             .geometry.coordinates[0].map(x => [x[1], x[0]])
          for (let i = 0; i < CONFIG.numLines; i++) {
             lines.push({
@@ -93,14 +93,14 @@ async function rotateCamera() {
    const duration = 30000;
    flyTo({
       heading: map.getViewModel().getLookAtData().heading -= 30,
-      zoom: map.getZoom() - 0.7,
+      zoom: map.getZoom() - 0.3,
       duration,
       tilt: 45
    });
    setInterval(() => {
       flyTo({
          heading: map.getViewModel().getLookAtData().heading += 30,
-         zoom: map.getZoom() - 0.5,
+         zoom: map.getZoom() - 0.2,
          duration
       });
    }, duration)
