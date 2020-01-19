@@ -8,7 +8,7 @@ const STATE = {
 
 const CONFIG = {
    //Get your own API Key at developer.here.com
-   apikey: 'EybNF4MkvcUj8WX1VJRKhT9dwDVz1wIHaKGF5tpqNss',
+   apikey: 'qHbGACVC8wUgzipkERYFIvbK8ASY9UhPsKSGTB7quRI',
    numLines: 250,
    zoom: 12,
    position: {lat: 40.721192,lng:  -73.997729},
